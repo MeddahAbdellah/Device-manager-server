@@ -11,7 +11,7 @@ var con = mysql.createConnection({
   user: "root",
   password: "",
   port: "3306",
-  database: ""
+  database: "device_manager"
 });
 con.connect();
 
@@ -78,7 +78,7 @@ app.post('/register', (req,res) => {
   con.query("INSERT INTO users SET ?", sqlParams, (error, result) => {
     if (error) {
       console.error(error);
-      if (error.code==="ER_DUP_ENTRY")res.status(500).send("Email or Phone number already used.");
+      if (error.code==="ER_DUP_ENTRY")res.status(500).send("Email already used.");
       else res.status(500).send("Internal Error");
     } else {
       dbResponse = JSON.parse(JSON.stringify(result));
