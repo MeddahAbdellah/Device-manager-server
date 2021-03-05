@@ -5,7 +5,7 @@ import mysql from 'mysql';
 import jssha from 'jssha';
 
 const app = express();
-const HTTP_PORT = 8080;
+const HTTP_PORT = 80;
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
