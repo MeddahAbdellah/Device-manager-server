@@ -1,5 +1,6 @@
 import { HttpStatus } from '../models/http_model.js';
 import jsonwebtoken from 'jsonwebtoken';
+import config from '../../config.js';
 
 export const VerifyToken = (req, res, next) => {
     var token = req.headers['x-access-token'];
