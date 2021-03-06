@@ -60,7 +60,7 @@ app.post('/login', (req, res) => {
     else {
       if (result && result.length > 0) {
         const userId = result[0].id;
-        const token = jsonwebtoken.sign({ userId }, config.secret, {
+        const token = jsonwebtoken.sign({ userId }, config.loginSecret, {
           expiresIn: 86400 // expires in 24 hours
         });
         const loginResp = {
