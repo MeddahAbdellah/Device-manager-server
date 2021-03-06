@@ -51,7 +51,7 @@ app.post('/login', (req, res) => {
     if (error) {console.error(error); res.status(500).send("Internal Error");}
     else {
       console.log('result', result);
-      dbResponse = JSON.parse(JSON.stringify(result));
+      const dbResponse = JSON.parse(JSON.stringify(result));
       console.log('dbResponse', dbResponse);
       if (dbResponse && dbResponse.length > 0) {
         loginResp = {
@@ -83,8 +83,8 @@ app.post('/register', (req,res) => {
       if (error.code==="ER_DUP_ENTRY")res.status(500).send("Email already used.");
       else res.status(500).send("Internal Error");
     } else {
-      dbResponse = JSON.parse(JSON.stringify(result));
-      if (dbResponse.affectedRows==1)res.send(sqlParams);
+      const dbResponse = JSON.parse(JSON.stringify(result));
+      if (dbResponse.affectedRows == 1) res.send(sqlParams);
       else res.status(500).send("Internal Error");
     }
   })
