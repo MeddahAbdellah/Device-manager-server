@@ -59,12 +59,12 @@ app.post('/login', (req, res) => {
     }
     else {
       if (result && result.length > 0) {
-
-        const token = jsonwebtoken.sign({ id: user._id }, config.secret, {
+        const userId = result[0].id;
+        const token = jsonwebtoken.sign({ userId }, config.secret, {
           expiresIn: 86400 // expires in 24 hours
         });
         const loginResp = {
-          user_id: result[0].id,
+          userId,
           name: result[0].name,
           email: result[0].email,
           auth: true,
