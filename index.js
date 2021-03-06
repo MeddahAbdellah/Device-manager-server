@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { VerifyToken } from '$/app/src/helpers.js';
 import { loginController, registerController } from './app/src/controllers.js';
+import https from 'https';
 
 const app = express();
 const HTTP_PORT = 443;
@@ -40,6 +41,11 @@ app.post('/login', loginController);
 app.post('/register', registerController);
 app.get('/me', VerifyToken, (req, res) =>  res.status(200).send('able to access'));
 
-app.listen(HTTP_PORT, () => {
-  console.log(`Server running on port ${HTTP_PORT}`);
+https.createServer({
+  key: fs.readFileSync('./key.pem'),
+  cert: fs.readFileSync('./cert.pem'),
+  passphrase: 'deviceManager',
+}, app)
+.listen(HTTP_PORT, () => {
+  console.log(`Https server running on port ${HTTP_PORT}`);
 });
