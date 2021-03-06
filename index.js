@@ -17,6 +17,24 @@ const httpsServer = https.createServer({
 }, app);
 
 const io = new SocketIoServer(httpsServer, { cors: { origin: "*", methods: ["GET", "POST"] } });
+
+io.of(`/signaling`).on('connection', (socket) => {
+
+  socket.on('connectToSession', (data) => {
+    socket.join(data.sessionId);
+  });
+
+  socket.on('sendSignal', (data) => {
+    io.of(`/signaling`).to(data.sessionId).emit('listenSignal', data)
+  });
+});
+
+io.of(`/devices`).on('connection', (socket) => {
+  socket.on('addToConnectedDevices', (data) => {
+    socket.join(data.deviceName);
+  });
+});
+
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 // parse application/x-www-form-urlencoded
