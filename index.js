@@ -5,7 +5,7 @@ import { VerifyToken } from '$/app/src/helpers.js';
 import { loginController, registerController } from './app/src/controllers.js';
 
 const app = express();
-const HTTP_PORT = 80;
+const HTTP_PORT = 443;
 
 
 app.use(express.static("public"));
