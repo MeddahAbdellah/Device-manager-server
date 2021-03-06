@@ -4,6 +4,9 @@ import bodyParser from 'body-parser';
 import mysql from 'mysql';
 import jssha from 'jssha';
 import { HttpStatus } from './app/models/http_model.js';
+import config from './config';
+import jsonwebtoken from 'jsonwebtoken';
+import { VerifyToken } from './app/src/helpers.js';
 
 const app = express();
 const HTTP_PORT = 80;
@@ -56,11 +59,18 @@ app.post('/login', (req, res) => {
     }
     else {
       if (result && result.length > 0) {
+
+        const token = jwt.sign({ id: user._id }, config.secret, {
+          expiresIn: 86400 // expires in 24 hours
+        });
         const loginResp = {
           user_id: result[0].id,
           name: result[0].name,
           email: result[0].email,
+          auth: true,
+          token,
         };
+
         res.send(loginResp);
       }
       else {
@@ -86,7 +96,13 @@ app.post('/register', (req,res) => {
       else res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Mysql Error: ${ dbResponse }`);
     }
   })
-})
+});
+
+
+
+router.get('/me', VerifyToken, function(req, res, next) {
+  res.status(200).send('login works go to sleep');
+});
 
 function getShaFromText(text) {
   const sha = new jssha("SHA-256", "TEXT");
