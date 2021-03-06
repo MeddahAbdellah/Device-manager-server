@@ -47,7 +47,7 @@ app.get('/', (req, res) => res.send('Server is up!'))
 app.post('/login', (req, res) => {
   con.query("SELECT * FROM users WHERE email=? AND password_hash=? ", [
     req.body.email,
-    new jssha("SHA-256", "TEXT").update(req.body.password).getHash("HEX"),
+    (new jssha("SHA-256", "TEXT")).update(req.body.password).getHash("HEX"),
   ], (error, result) => {
     if (error) {
       console.error(error);
@@ -73,7 +73,7 @@ app.post('/register', (req,res) => {
   sqlParams = {
     name: req.body.name,
     email: req.body.email,
-    password_hash: new jssha("SHA-256", "TEXT").update(req.body.password).getHash("HEX"),
+    password_hash: (new jssha("SHA-256", "TEXT")).update(req.body.password).getHash("HEX"),
   };
   con.query("INSERT INTO users SET ?", sqlParams, (error, result) => {
     if (error) {
