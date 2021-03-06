@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import mysql from 'mysql';
 import jssha from 'jssha';
 import { HttpStatus } from './app/models/http_model.js';
-import config from './config';
+import config from './config.js';
 import jsonwebtoken from 'jsonwebtoken';
 import { VerifyToken } from './app/src/helpers.js';
 
