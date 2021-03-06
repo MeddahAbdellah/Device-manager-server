@@ -3,10 +3,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mysql from 'mysql';
 import jssha from 'jssha';
-import { HttpStatus } from './app/models/http_model.js';
-import config from './config.js';
+import { HttpStatus } from '$/app/models/http_model.js';
+import config from '$/config.js';
 import jsonwebtoken from 'jsonwebtoken';
-import { VerifyToken } from './app/src/helpers.js';
+import { VerifyToken } from '$/app/src/helpers.js';
 
 const app = express();
 const HTTP_PORT = 80;
