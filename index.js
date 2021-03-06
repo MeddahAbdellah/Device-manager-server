@@ -44,7 +44,7 @@ app.use(function(req, res, next) {
 });
 app.get('/', (req, res) => res.send('Server is up!'))
 app.post('/login', (req, res) => {
-  con.query("SELECT * FROM users WHERE email=? AND password=? ", [
+  con.query("SELECT * FROM users WHERE email=? AND password_hash=? ", [
     req.body.email,
     req.body.password
   ], (error, result) => {
@@ -73,7 +73,7 @@ app.post('/register', (req,res) => {
   sqlParams = {
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
+    password_hash: req.body.password,
   };
   con.query("INSERT INTO users SET ?", sqlParams, (error, result) => {
     if (error) {
