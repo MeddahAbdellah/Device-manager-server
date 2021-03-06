@@ -1,4 +1,5 @@
 const config = {
-    loginSecret: 'supersecret'
+    loginSecret: 'supersecret',
+    streamingSessionSecret: 'streamingSessionSecret'
 };
 export default config;
