@@ -2,8 +2,9 @@ console.log("Server loading...");
 import express from 'express';
 import bodyParser from 'body-parser';
 import { VerifyToken } from '$/app/src/helpers.js';
-import { loginController, registerController } from './app/src/controllers.js';
+import { loginController, registerController } from '$/app/src/controllers.js';
 import https from 'https';
+import fs from 'fs';
 
 const app = express();
 const HTTP_PORT = 443;
