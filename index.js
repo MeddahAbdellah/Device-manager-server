@@ -60,7 +60,7 @@ app.post('/login', (req, res) => {
     else {
       if (result && result.length > 0) {
 
-        const token = jwt.sign({ id: user._id }, config.secret, {
+        const token = jsonwebtoken.sign({ id: user._id }, config.secret, {
           expiresIn: 86400 // expires in 24 hours
         });
         const loginResp = {
