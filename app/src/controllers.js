@@ -58,10 +58,10 @@ export const createStreamingSessionController = (req, res ,io) => {
   const sessionId = getShaFromText(`${req.body.deviceName}${config.streamingSessionSecret}${(new Date()).toString()}`)
   io.of(`/${req.body.deviceName}`).emit("sessionInit", { sessionId });
   io.of(`/${sessionId}`).on('connection',(socket) =>{
-    socket.on('signal', (data) => console.log('/${sessionId}', data));
+    socket.on('sessionSignal', (data) => socket.broadcast.emit('sessionSignal', data));
   });
   io.of(`/test1`).on('connection',(socket) =>{
-    socket.on('signal', (data) => console.log('/${sessionId}', data));
+    socket.on('sessionSignal', (data) => socket.broadcast.emit('sessionSignal', data));
   });
   res.send({ sessionId });
 }
