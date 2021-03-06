@@ -100,7 +100,7 @@ app.post('/register', (req,res) => {
 
 
 
-router.get('/me', VerifyToken, function(req, res, next) {
+app.get('/me', VerifyToken, function(req, res, next) {
   res.status(200).send('login works go to sleep');
 });
 
