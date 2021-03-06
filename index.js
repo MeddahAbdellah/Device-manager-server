@@ -3,7 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mysql from 'mysql';
 import jssha from 'jssha';
-import HttpStatus from './app/models/http_model.ts';
+import HttpStatus from './app/models/http_model.js';
 
 const app = express();
 const HTTP_PORT = 80;
