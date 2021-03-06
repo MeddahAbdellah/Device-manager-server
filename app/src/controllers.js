@@ -60,8 +60,5 @@ export const createStreamingSessionController = (req, res ,io) => {
   io.of(`/${sessionId}`).on('connection',(socket) =>{
     socket.on('sessionSignal', (data) => socket.broadcast.emit('sessionSignal', data));
   });
-  io.of(`/test1`).on('connection',(socket) =>{
-    socket.on('sessionSignal', (data) => socket.broadcast.emit('sessionSignal', data));
-  });
   res.send({ sessionId });
 }
