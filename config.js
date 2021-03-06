@@ -1,3 +1,4 @@
-export default config = {
+const config = {
     loginSecret: 'supersecret'
-  };
+};
+export default config;
