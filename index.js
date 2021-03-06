@@ -2,7 +2,7 @@ console.log("Server loading...");
 import express from 'express';
 import bodyParser from 'body-parser';
 import { VerifyToken } from '$/app/src/helpers.js';
-import { loginController, registerController } from './app/src/controlers';
+import { loginController, registerController } from './app/src/controllers.js';
 
 const app = express();
 const HTTP_PORT = 80;
