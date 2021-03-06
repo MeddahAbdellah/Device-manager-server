@@ -50,8 +50,10 @@ app.post('/login', (req, res) => {
   ], (error, result) => {
     if (error) {console.error(error); res.status(500).send("Internal Error");}
     else {
+      console.log('result', result);
       dbResponse = JSON.parse(JSON.stringify(result));
-      if (dbResponse.length>0) {
+      console.log('dbResponse', dbResponse);
+      if (dbResponse && dbResponse.length > 0) {
         loginResp = {
           user_id: dbResponse[0].id,
           name: dbResponse[0].name,
