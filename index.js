@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mysql from 'mysql';
 import jssha from 'jssha';
+import HttpStatus from '/app/models/http_model.ts';
 
 const app = express();
 const HTTP_PORT = 80;
@@ -46,46 +47,42 @@ app.get('/', (req, res) => res.send('Server is up!'))
 app.post('/login', (req, res) => {
   con.query("SELECT * FROM users WHERE email=? AND password_hash=? ", [
     req.body.email,
-    req.body.password
+    new jssha("SHA-256", "TEXT").update(req.body.password).getHash("HEX"),
   ], (error, result) => {
-    if (error) {console.error(error); res.status(500).send("Internal Error");}
+    if (error) {
+      console.error(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Internal Error: ${ error }`);
+    }
     else {
-      console.log('result', result);
-      const dbResponse = JSON.parse(JSON.stringify(result));
-      console.log('dbResponse', dbResponse);
-      if (dbResponse && dbResponse.length > 0) {
+      if (result && result.length > 0) {
         loginResp = {
-          user_id: dbResponse[0].id,
-          name: dbResponse[0].name,
-          email: dbResponse[0].email,
+          user_id: result[0].id,
+          name: result[0].name,
+          email: result[0].email,
         };
         res.send(loginResp);
       }
       else {
-          res.status(500).send("Email or password incorrect.");
+          res.status(HttpStatus.UNAUTHORIZED).send("Email or password incorrect.");
       }
     }
   });
 });
 
 app.post('/register', (req,res) => {
-  let shaHasher = new jssha("SHA-256", "TEXT");
-  shaHasher.update(req.query.name+req.body.email+req.body.password+ new Date().toString());
-  userHashedID = shaHasher.getHash("HEX");
   sqlParams = {
     name: req.body.name,
     email: req.body.email,
-    password_hash: req.body.password,
+    password_hash: new jssha("SHA-256", "TEXT").update(req.body.password).getHash("HEX"),
   };
   con.query("INSERT INTO users SET ?", sqlParams, (error, result) => {
     if (error) {
       console.error(error);
-      if (error.code==="ER_DUP_ENTRY")res.status(500).send("Email already used.");
-      else res.status(500).send("Internal Error");
+      if (error.code==="ER_DUP_ENTRY")res.status(HttpStatus.INTERNAL_SERVER_ERROR).send("Email already used.");
+      else res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Internal Error: ${ error }`);
     } else {
-      const dbResponse = JSON.parse(JSON.stringify(result));
-      if (dbResponse.affectedRows == 1) res.send(sqlParams);
-      else res.status(500).send("Internal Error");
+      if (result.affectedRows == 1) res.send(sqlParams);
+      else res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Mysql Error: ${ dbResponse }`);
     }
   })
 })
