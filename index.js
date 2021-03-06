@@ -56,7 +56,7 @@ app.post('/login', (req, res) => {
     }
     else {
       if (result && result.length > 0) {
-        loginResp = {
+        const loginResp = {
           user_id: result[0].id,
           name: result[0].name,
           email: result[0].email,
@@ -71,7 +71,7 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/register', (req,res) => {
-  sqlParams = {
+  const sqlParams = {
     name: req.body.name,
     email: req.body.email,
     password_hash: getShaFromText(req.body.password),
