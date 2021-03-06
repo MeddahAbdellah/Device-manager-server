@@ -57,5 +57,5 @@ export const registerController = (req,res) => {
 export const createStreamingSessionController = (req, res ,io) => {
   const sessionId = getShaFromText(`${req.body.deviceName}${config.streamingSessionSecret}${(new Date()).toString()}`)
   io.of(`/${req.body.deviceName}`).emit("sessionInit", { sessionId });
-  res.json({ sessionId });
+  res.send({ sessionId });
 }

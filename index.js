@@ -36,25 +36,8 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.send('Server is up!'))
 app.post('/login', loginController);
 app.post('/register', registerController);
-app.post('/createStreamingSession', VerifyToken, (req,res) => createStreamingSessionController(req, res, io));
-
-app.get('/me', VerifyToken, (req, res) =>  res.status(200).send('able to access'));
-
-io.on("connection", (socket) => {
-});
-
-io.of('/test1').on("connection", (socket) => {
-  socket.on('message', (data) => {
-    console.log('from test1 ', data);
-  });
-});
-
-io.of('/test2').on("connection", (socket) => {
-  socket.on('message', (data) => {
-    console.log('from test2 ', data);
-    io.of('/test1').emit('fromTest2', data);
-  });
-});
+app.post('/createStreamingSession', VerifyToken, (req, res) => createStreamingSessionController(req, res, io));
+app.get('/me', VerifyToken, (req, res) =>  res.status(200).send({ auth: true }));
 
 httpsServer.listen(HTTP_PORT, () => {
   console.log(`Https server running on port ${HTTP_PORT}`);
