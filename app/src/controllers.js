@@ -3,6 +3,7 @@ import config from '$/config.js';
 import jsonwebtoken from 'jsonwebtoken';
 import mysqlService from '$/app/src/mysqlService.js';
 import { getShaFromText } from '$/app/src/helpers.js';
+import { compare } from 'bcryptjs';
 
 export const loginController = (req, res) =>  {
   mysqlService.query("SELECT * FROM users WHERE email=? AND password_hash=? ", [
@@ -81,7 +82,9 @@ export const getDevicesController = async (req, res, io) =>  {
     }
     else {
       const devices = result.map((device) => {
-        const numClients = io.of("/devices").in(device.device_name).sockets.size;
+        const clientsInRoom = io.of("/devices").sockets.clients(device.device_name);
+        console.log('clientsInRoom', clientsInRoom)
+        const numClients = clientsInRoom.length;
         const connected = numClients > 0;
         return { connected, ...device};
       })
