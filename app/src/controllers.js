@@ -83,9 +83,9 @@ export const getDevicesController = async (req, res, io) =>  {
       const devices = result.map((device) => {
         console.log("io.of('/devices').adapter", io.of('/devices').adapter);
 
-        console.log("io.of('/devices').adapter.rooms", io.of('/devices').adapter.rooms);
+        console.log("io.of('/devices').adapter.rooms", Object.keys(io.of('/devices').adapter.rooms));
         console.log("io.of('/devices').sockets", io.of('/devices').sockets)
-        const clientsInRoom = io.of('/devices').adapter.rooms[device.device_name];
+        const clientsInRoom = Object.keys(io.of('/devices').adapter.rooms)[device.device_name];
         console.log('clientsInRoom', clientsInRoom)
         const numClients = clientsInRoom.length;
         const connected = numClients > 0;
