@@ -11,7 +11,7 @@ export const VerifyToken = (req, res, next) => {
   jsonwebtoken.verify(token, config.loginSecret, function(err, decoded) {
     if (err)
     return res.status(HttpStatus.UNAUTHORIZED).send({ auth: false, message: 'Failed to authenticate token.' });
-      
+    console.log('decoded.id');
     // if everything good, save to request for use in other routes
     req.userId = decoded.id;
     next();
