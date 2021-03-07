@@ -3,7 +3,6 @@ import config from '$/config.js';
 import jsonwebtoken from 'jsonwebtoken';
 import mysqlService from '$/app/src/mysqlService.js';
 import { getShaFromText } from '$/app/src/helpers.js';
-import { compare } from 'bcryptjs';
 
 export const loginController = (req, res) =>  {
   mysqlService.query("SELECT * FROM users WHERE email=? AND password_hash=? ", [
