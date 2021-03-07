@@ -81,7 +81,7 @@ export const getDevicesController = async (req, res, io) =>  {
     }
     else {
       const devices = result.map((device) => {
-        const numClients = _numClientsInRoom('/devices', device.device_name, io);
+        const numClients = io.of("/devices").in(device.device_name).sockets.size;
         console.log('numClients', numClients);
         const connected = numClients > 0;
         return { connected, ...device};
@@ -95,9 +95,4 @@ export const createStreamingSessionController = (req, res ,io) => {
   const sessionId = getShaFromText(`${req.body.deviceName}${config.streamingSessionSecret}${(new Date()).toString()}`)
   io.of('/devices').to(req.body.deviceName).emit("sessionInit", { sessionId })
   res.send({ sessionId });
-}
-
-const _numClientsInRoom = (namespace, room, io) => {
-  var clients = io.nsps[namespace].adapter.rooms[room];
-  return Object.keys(clients).length;
 }
