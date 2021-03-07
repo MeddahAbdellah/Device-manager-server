@@ -82,10 +82,8 @@ export const getDevicesController = async (req, res, io) =>  {
     else {
       const devices = result.map((device) => {
         const clientsInRoom = io.of('/devices').adapter.rooms.get(device.device_name);
-        console.log('clientsInRoom', clientsInRoom)
-        const numClients = clientsInRoom.length;
-        const connected = numClients > 0;
-        return { connected, ...device};
+        const connected = !!clientsInRoom;
+        return { connected, ...device };
       })
       res.send(devices);
     }
