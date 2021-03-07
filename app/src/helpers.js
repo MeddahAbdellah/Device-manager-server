@@ -18,6 +18,10 @@ export const VerifyToken = (req, res, next) => {
   });
 }
 
+export const userOwnsDevice = (req, res, next) => {
+  next();
+}
+
 export const getShaFromText = (text) => {
   const sha = new jssha("SHA-256", "TEXT");
   sha.update(text);

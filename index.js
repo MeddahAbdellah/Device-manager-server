@@ -1,8 +1,14 @@
 console.log("Server loading...");
 import express from 'express';
 import bodyParser from 'body-parser';
-import { VerifyToken } from '$/app/src/helpers.js';
-import { loginController, registerController, createStreamingSessionController } from '$/app/src/controllers.js';
+import { VerifyToken, userOwnsDevice } from '$/app/src/helpers.js';
+import {
+  loginController,
+  registerController,
+  createStreamingSessionController,
+  addDeviceController,
+  getDevicesController,
+} from '$/app/src/controllers.js';
 import https from 'https';
 import fs from 'fs';
 import { Server as SocketIoServer } from "socket.io";
@@ -58,6 +64,9 @@ app.get('/', (req, res) => res.send('Server is up!'))
 app.post('/login', loginController);
 app.post('/register', registerController);
 app.post('/createStreamingSession', VerifyToken, (req, res) => createStreamingSessionController(req, res, io));
+app.post('/addDevice', VerifyToken, (req, res) => addDeviceController(req, res));
+app.post('/getDeivces', VerifyToken, userOwnsDevice, (req, res) => getDevicesController(req, res, io));
+
 app.get('/me', VerifyToken, (req, res) =>  res.status(200).send({ auth: true }));
 
 httpsServer.listen(HTTP_PORT, () => {

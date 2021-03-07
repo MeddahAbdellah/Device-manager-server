@@ -54,6 +54,37 @@ export const registerController = (req,res) => {
   })
 }
 
+export const addDeviceController = (req, res) => {
+  const sqlParams = {
+    user_id: req.body.userId,
+    device_name: req.body.email,
+  };
+  mysqlService.query("INSERT INTO devices SET ?", sqlParams, (error, result) => {
+    if (error) {
+      console.error(error);
+      if (error.code === "ER_DUP_ENTRY") res.status(HttpStatus.INTERNAL_SERVER_ERROR).send("Device already used.");
+      else res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Internal Error: ${ error }`);
+    } else {
+      if (result.affectedRows == 1) res.send(sqlParams);
+      else res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Mysql Error: ${ dbResponse }`);
+    }
+  })
+}
+
+export const getDevicesController = (req, res) =>  {
+  mysqlService.query("SELECT * FROM devices WHERE user_id=?", [
+    req.body.userId,
+  ], (error, result) => {
+    if (error) {
+      console.error(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Internal Error: ${ error }`);
+    }
+    else {
+      res.send(result);
+    }
+  });
+}
+
 export const createStreamingSessionController = (req, res ,io) => {
   const sessionId = getShaFromText(`${req.body.deviceName}${config.streamingSessionSecret}${(new Date()).toString()}`)
   io.of('/devices').to(req.body.deviceName).emit("sessionInit", { sessionId })
