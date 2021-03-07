@@ -71,7 +71,7 @@ export const addDeviceController = (req, res) => {
   })
 }
 
-export const getDevicesController = async (req, res) =>  {
+export const getDevicesController = async (req, res, io) =>  {
   mysqlService.query("SELECT * FROM devices WHERE user_id=?", [
     req.userId,
   ], (error, result) => {
@@ -81,7 +81,7 @@ export const getDevicesController = async (req, res) =>  {
     }
     else {
       const devices = result.map((device) => {
-        const numClients = _numClientsInRoom('/devices', device.device_name);
+        const numClients = _numClientsInRoom('/devices', device.device_name, io);
         console.log('numClients', numClients);
         const connected = numClients > 0;
         return { connected, ...device};
