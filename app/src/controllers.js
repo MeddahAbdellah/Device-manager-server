@@ -71,7 +71,7 @@ export const addDeviceController = (req, res) => {
   })
 }
 
-export const getDevicesController = (req, res) =>  {
+export const getDevicesController = async (req, res) =>  {
   mysqlService.query("SELECT * FROM devices WHERE user_id=?", [
     req.userId,
   ], (error, result) => {
@@ -80,7 +80,13 @@ export const getDevicesController = (req, res) =>  {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Internal Error: ${ error }`);
     }
     else {
-      res.send(result);
+      const devices = result.map((device) => {
+        const numClients = _numClientsInRoom('/devices', device.device_name);
+        console.log('numClients', numClients);
+        const connected = numClients > 0;
+        return { connected, ...device};
+      })
+      res.send(devices);
     }
   });
 }
@@ -89,4 +95,9 @@ export const createStreamingSessionController = (req, res ,io) => {
   const sessionId = getShaFromText(`${req.body.deviceName}${config.streamingSessionSecret}${(new Date()).toString()}`)
   io.of('/devices').to(req.body.deviceName).emit("sessionInit", { sessionId })
   res.send({ sessionId });
+}
+
+const _numClientsInRoom = (namespace, room, io) => {
+  var clients = io.nsps[namespace].adapter.rooms[room];
+  return Object.keys(clients).length;
 }
