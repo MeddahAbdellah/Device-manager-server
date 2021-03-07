@@ -15,9 +15,7 @@ export const loginController = (req, res) =>  {
     }
     else {
       if (result && result.length > 0) {
-        console.log('resut', result);
         const userId = result[0].id;
-        console.log('userId', userId);
         const token = jsonwebtoken.sign({ userId }, config.loginSecret, {
           expiresIn: 86400 // expires in 24 hours
         });
