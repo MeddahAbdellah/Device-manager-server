@@ -57,7 +57,7 @@ export const registerController = (req,res) => {
 export const addDeviceController = (req, res) => {
   const sqlParams = {
     user_id: req.body.userId,
-    device_name: req.body.email,
+    device_name: req.body.deviceName,
   };
   mysqlService.query("INSERT INTO devices SET ?", sqlParams, (error, result) => {
     if (error) {
