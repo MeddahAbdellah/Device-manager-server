@@ -21,16 +21,19 @@ const io = new SocketIoServer(httpsServer, { cors: { origin: "*", methods: ["GET
 io.of(`/signaling`).on('connection', (socket) => {
 
   socket.on('connectToSession', (data) => {
+    console.log('connectToSession', data);
     socket.join(data.sessionId);
   });
 
   socket.on('sendSignal', (data) => {
+    console.log('sendSignal', data);
     io.of(`/signaling`).to(data.sessionId).emit('listenSignal', data)
   });
 });
 
 io.of(`/devices`).on('connection', (socket) => {
   socket.on('addToConnectedDevices', (data) => {
+    console.log('addToConnectedDevices', data);
     socket.join(data.deviceName);
   });
 });

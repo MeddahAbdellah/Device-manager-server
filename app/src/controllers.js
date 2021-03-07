@@ -45,7 +45,7 @@ export const registerController = (req,res) => {
   mysqlService.query("INSERT INTO users SET ?", sqlParams, (error, result) => {
     if (error) {
       console.error(error);
-      if (error.code==="ER_DUP_ENTRY") res.status(HttpStatus.INTERNAL_SERVER_ERROR).send("Email already used.");
+      if (error.code === "ER_DUP_ENTRY") res.status(HttpStatus.INTERNAL_SERVER_ERROR).send("Email already used.");
       else res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Internal Error: ${ error }`);
     } else {
       if (result.affectedRows == 1) res.send(sqlParams);
