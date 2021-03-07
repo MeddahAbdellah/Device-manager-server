@@ -82,7 +82,6 @@ export const getDevicesController = async (req, res, io) =>  {
     else {
       const devices = result.map((device) => {
         const numClients = io.of("/devices").in(device.device_name).sockets.size;
-        console.log('numClients', numClients);
         const connected = numClients > 0;
         return { connected, ...device};
       })
