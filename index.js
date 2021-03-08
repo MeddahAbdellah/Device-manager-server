@@ -33,7 +33,7 @@ io.of(`/signaling`).on('connection', (socket) => {
 
   socket.on('sendSignal', (data) => {
     console.log('sendSignal', data);
-    io.of(`/signaling`).to(data.sessionId).emit('listenSignal', data)
+    socket.of(`/signaling`).to(data.sessionId).emit('listenSignal', data)
   });
 });
 
