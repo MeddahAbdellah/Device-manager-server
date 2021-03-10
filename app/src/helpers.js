@@ -18,7 +18,23 @@ export const VerifyToken = (req, res, next) => {
 }
 
 export const userOwnsDevice = (req, res, next) => {
-  next();
+  mysqlService.query("SELECT * FROM devices WHERE user_id=? AND device_name=? ", [
+    req.userId,
+    req.body.deviceName,
+  ], (error, result) => {
+    if (error) {
+      console.error(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(`Internal Error: ${ error }`);
+    }
+    else {
+      if (result && result.length > 0) {
+        next();
+      }
+      else {
+        res.status(HttpStatus.UNAUTHORIZED).send("You don't own this device.");
+      }
+    }
+  });
 }
 
 export const getShaFromText = (text) => {

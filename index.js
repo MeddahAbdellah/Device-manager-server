@@ -63,9 +63,9 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.send('Server is up!'))
 app.post('/login', loginController);
 app.post('/register', registerController);
-app.post('/createStreamingSession', VerifyToken, (req, res) => createStreamingSessionController(req, res, io));
+app.post('/createStreamingSession', VerifyToken, userOwnsDevice, (req, res) => createStreamingSessionController(req, res, io));
 app.post('/addDevice', VerifyToken, (req, res) => addDeviceController(req, res));
-app.get('/getDevices', VerifyToken, userOwnsDevice, (req, res) => getDevicesController(req, res, io));
+app.get('/getDevices', VerifyToken, (req, res) => getDevicesController(req, res, io));
 
 app.get('/me', VerifyToken, (req, res) =>  res.status(200).send({ auth: true }));
 
