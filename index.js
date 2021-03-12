@@ -52,9 +52,9 @@ io.of(`/files`).on('connection', (socket) => {
     socket.join(data.sessionId);
   });
 
-  socket.on('sendSignal', (data) => {
+  socket.on('sendData', (data) => {
     console.log('FILES: sendSignal', data);
-    socket.to(data.sessionId).emit('listenSignal', data)
+    socket.to(data.sessionId).emit('listenData', data)
   });
 });
 
