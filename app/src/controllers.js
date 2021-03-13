@@ -95,3 +95,9 @@ export const createStreamingSessionController = (req, res ,io) => {
   io.of('/devices').to(req.body.deviceName).emit("sessionInit", { sessionId })
   res.send({ sessionId });
 }
+
+export const getFileSharingSessionForDevice = (req, res ,io) => {
+  const sessionId = getShaFromText(`${req.body.deviceName}${config.streamingSessionSecret}${(new Date()).toString()}`)
+  io.of('/fileDevices').to(req.body.deviceName).emit("sessionInit", { sessionId })
+  res.send({ sessionId });
+}
