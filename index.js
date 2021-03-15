@@ -18,8 +18,8 @@ const app = express();
 const HTTP_PORT = 443;
 
 const httpsServer = https.createServer({
-  key: fs.readFileSync('./key.pem'),
-  cert: fs.readFileSync('./cert.pem'),
+  key: fs.readFileSync('./keys/privkey.pem'),
+  cert: fs.readFileSync('./keys/cert.pem'),
   passphrase: 'deviceManager',
 }, app);
 
